@@ -17,7 +17,7 @@ for pj in pjs:
     project = {"name": pj_name}
     projects.append(project)
 
-GERRIT_URL = "192.168.10.100"
+GERRIT_URL = "127.0.0.1"
 GERRIT_SSH_PORT = 29418
 USERNAME = "i314q159"
 
