@@ -27,9 +27,8 @@ ssh.connect(GERRIT_URL, port=GERRIT_SSH_PORT, username=USERNAME)
 
 
 def create_project(name):
-    stdin, stdout, stderr = ssh.exec_command(
-        f"gerrit create-project {parent_repo}/{name} --empty-commit"
-    )
+    cmd = f"gerrit create-project {parent_repo}/{name} --empty-commit -b master"
+    stdin, stdout, stderr = ssh.exec_command(cmd)
 
     if stdout.channel.recv_exit_status() != 0:
         print(f"Failed to create project {parent_repo}/{name}")
@@ -42,9 +41,8 @@ def create_project(name):
 def set_project_parent(name):
     print(f"Setting parent for {name}")
 
-    stdin, stdout, stderr = ssh.exec_command(
-        f"gerrit set-project-parent --parent {parent_repo} {parent_repo}/{name}"
-    )
+    cmd = f"gerrit set-project-parent --parent {parent_repo} {parent_repo}/{name}"
+    stdin, stdout, stderr = ssh.exec_command(cmd)
 
     if stdout.channel.recv_exit_status() != 0:
         print(f"Failed to set parent for {parent_repo}/{name}")
