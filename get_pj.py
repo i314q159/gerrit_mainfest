@@ -52,6 +52,5 @@ if __name__ == "__main__":
         for project in projects:
             # create_project(project["name"])
             set_project_parent(project["name"], parent_name=parent_repo)
-            pass
     finally:
         ssh.close()
