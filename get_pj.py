@@ -9,10 +9,7 @@ def create_project(name):
 
     if stdout.channel.recv_exit_status() != 0:
         print(f"Failed to create project {parent_repo}/{name}")
-        return False
-
     print(cmd)
-    return True
 
 
 def set_project_parent(name, parent_name):
@@ -22,17 +19,14 @@ def set_project_parent(name, parent_name):
 
     if stdout.channel.recv_exit_status() != 0:
         print(f"Failed to set parent for {parent_repo}/{name}")
-        return False
-
     print(cmd)
-    return True
 
 
 if __name__ == "__main__":
-    parent_repo = input("parent repo name: ") or f"asu_android_11"
+    parent_repo = input("parent repo name: ") or f"test"
     projects = []
 
-    xml_path = input("manifest xml: ") or f"./asu_android_11.xml"
+    xml_path = input("manifest xml: ") or f"./manifest.xml"
     dom = parse(xml_path)
     data = dom.documentElement
 
@@ -44,9 +38,9 @@ if __name__ == "__main__":
         project = {"name": pj_name}
         projects.append(project)
 
-    GERRIT_URL = input("gerrit ip: ") or "192.168.10.100"
-    GERRIT_PORT = input ("gerrit port: ") or 29418
-    USERNAME = input ("gerrit user name: ") or "hewenbo"
+    GERRIT_URL = input("gerrit ip: ") or "127.0.0.1"
+    GERRIT_PORT = input("gerrit port: ") or 29418
+    USERNAME = input("gerrit user name: ") or "i314q159"
 
     print(f"{USERNAME}@{GERRIT_URL}:{GERRIT_PORT}")
 
@@ -56,9 +50,6 @@ if __name__ == "__main__":
 
     try:
         for project in projects:
-            # if create_project(project["name"]):
-            #     set_project_parent(project["name"])
-
             # create_project(project["name"])
             set_project_parent(project["name"], parent_name=parent_repo)
             pass
