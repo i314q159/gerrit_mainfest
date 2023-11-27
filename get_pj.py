@@ -3,6 +3,20 @@ from xml.dom.minidom import parse
 import paramiko
 
 
+def get_name(xml_path):
+    dom = parse(xml_path)
+    data = dom.documentElement
+    pjs = data.getElementsByTagName("project")
+    projects = []
+    for pj in pjs:
+        pj_name = pj.getAttribute("name")
+
+        project = {"name": pj_name}
+        projects.append(project)
+
+    return projects
+
+
 def create_project(name):
     cmd = f"gerrit create-project --empty-commit --branch master {parent_repo}/{name}"
     stdin, stdout, stderr = ssh.exec_command(cmd)
@@ -24,19 +38,9 @@ def set_project_parent(name, parent_name):
 
 if __name__ == "__main__":
     parent_repo = input("parent repo name: ") or f"i314q159"
-    projects = []
-
     xml_path = input("manifest xml: ") or f"./default.xml"
-    dom = parse(xml_path)
-    data = dom.documentElement
 
-    pjs = data.getElementsByTagName("project")
-    for pj in pjs:
-        pj_path = pj.getAttribute("path")
-        pj_name = pj.getAttribute("name")
-
-        project = {"name": pj_name}
-        projects.append(project)
+    projects = get_name(xml_path=xml_path).copy()
 
     GERRIT_URL = input("gerrit ip: ") or "127.0.0.1"
     GERRIT_PORT = input("gerrit port: ") or 29418
