@@ -8,7 +8,7 @@ def create_project(name):
     stdin, stdout, stderr = ssh.exec_command(cmd)
 
     if stdout.channel.recv_exit_status() != 0:
-        print(f"Failed to create project {parent_repo}/{name}")
+        print(f"failed to create project: {parent_repo}/{name}")
     print(cmd)
 
 
@@ -18,7 +18,7 @@ def set_project_parent(name, parent_name):
     stdin, stdout, stderr = ssh.exec_command(cmd)
 
     if stdout.channel.recv_exit_status() != 0:
-        print(f"Failed to set parent for {parent_repo}/{name}")
+        print(f"failed to set project: {parent_repo}/{name}")
     print(cmd)
 
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     parent_repo = input("parent repo name: ") or f"i314q159"
     projects = []
 
-    xml_path = input("manifest xml: ") or f"./manifest.xml"
+    xml_path = input("manifest xml: ") or f"./default.xml"
     dom = parse(xml_path)
     data = dom.documentElement
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     GERRIT_URL = input("gerrit ip: ") or "127.0.0.1"
     GERRIT_PORT = input("gerrit port: ") or 29418
-    USERNAME = input("gerrit user name: ") or "i314q159"
+    USERNAME = input("gerrit user name: ") or "admin"
 
     print(f"{USERNAME}@{GERRIT_URL}:{GERRIT_PORT}")
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     try:
         for project in projects:
-            # create_project(project["name"])
+            create_project(project["name"])
             set_project_parent(project["name"], parent_name=parent_repo)
     finally:
         ssh.close()
