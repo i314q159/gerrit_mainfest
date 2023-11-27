@@ -1,5 +1,3 @@
-# 修改函数set_project_parent里面的父仓名字，修改xml的相对地址
-
 from xml.dom.minidom import parse
 
 import paramiko
@@ -18,8 +16,6 @@ def create_project(name):
 
 
 def set_project_parent(name, parent_name):
-    # print(f"Setting parent for {name}")
-
     cmd = f"gerrit set-project-parent --parent {parent_name} {parent_repo}/{name}"
 
     stdin, stdout, stderr = ssh.exec_command(cmd)
@@ -33,24 +29,26 @@ def set_project_parent(name, parent_name):
 
 
 if __name__ == "__main__":
-    parent_repo = "asu_android_11"
+    parent_repo = input("parent repo name: ") or f"asu_android_11"
     projects = []
 
-    dom = parse("./manifests/asu_android_11.xml")
+    xml_path = input("manifest xml: ") or f"./asu_android_11.xml"
+    dom = parse(xml_path)
     data = dom.documentElement
 
     pjs = data.getElementsByTagName("project")
     for pj in pjs:
         pj_path = pj.getAttribute("path")
         pj_name = pj.getAttribute("name")
-        # pj_groups = pj.getAttribute("groups")
 
         project = {"name": pj_name}
         projects.append(project)
 
-    GERRIT_URL = "192.168.10.100"
-    GERRIT_PORT = 29418
-    USERNAME = "hewenbo"
+    GERRIT_URL = input("gerrit ip: ") or "192.168.10.100"
+    GERRIT_PORT = input ("gerrit port: ") or 29418
+    USERNAME = input ("gerrit user name: ") or "hewenbo"
+
+    print(f"{USERNAME}@{GERRIT_URL}:{GERRIT_PORT}")
 
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
