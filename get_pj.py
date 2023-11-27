@@ -4,7 +4,7 @@ import paramiko
 
 
 def create_project(name):
-    cmd = f"gerrit create-project --empty-commit -b master {parent_repo}/{name}"
+    cmd = f"gerrit create-project --empty-commit --branch master {parent_repo}/{name}"
     stdin, stdout, stderr = ssh.exec_command(cmd)
 
     if stdout.channel.recv_exit_status() != 0:
@@ -51,6 +51,6 @@ if __name__ == "__main__":
     try:
         for project in projects:
             create_project(project["name"])
-            set_project_parent(project["name"], parent_name=parent_repo)
+            # set_project_parent(project["name"], parent_name=parent_repo)
     finally:
         ssh.close()
