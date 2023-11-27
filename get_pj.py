@@ -23,7 +23,7 @@ def set_project_parent(name, parent_name):
 
 
 if __name__ == "__main__":
-    parent_repo = input("parent repo name: ") or f"test"
+    parent_repo = input("parent repo name: ") or f"i314q159"
     projects = []
 
     xml_path = input("manifest xml: ") or f"./manifest.xml"
