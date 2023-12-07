@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
     projects = get_name(xml_path=xml_path).copy()
 
-    GERRIT_URL = input("gerrit ip: ") or "127.0.0.1"
+    GERRIT_URL = input("gerrit ip: ") or f"127.0.0.1"
     GERRIT_PORT = input("gerrit port: ") or 29418
-    USERNAME = input("gerrit user name: ") or "admin"
+    USERNAME = input("gerrit user name: ") or f"admin"
 
     print(f"{USERNAME}@{GERRIT_URL}:{GERRIT_PORT}")
 
